@@ -32,7 +32,7 @@ func EnsureCloned(uri, destinationPath string) error {
 	if ok, err := IsGitCloned(destinationPath); err != nil {
 		return err
 	} else if !ok {
-		_, err = Exec("", "clone", "-v", uri, destinationPath)
+		_, err = Exec("", "clone", "-v", "--depth=1", uri, destinationPath)
 		return err
 	}
 	return nil
@@ -51,7 +51,7 @@ func IsGitCloned(gitPath string) (bool, error) {
 // and also will create a pristine working directory by removing
 // untracked files and directories.
 func updateAndCleanUntracked(destinationPath string) error {
-	if _, err := Exec(destinationPath, "fetch", "-v"); err != nil {
+	if _, err := Exec(destinationPath, "fetch", "-v", "--depth=1"); err != nil {
 		return errors.Wrapf(err, "fetch index at %q failed", destinationPath)
 	}
 
